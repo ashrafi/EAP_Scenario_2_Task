@@ -13,6 +13,11 @@ import shared
 class FruitViewModel: ObservableObject {
     @Published private(set) var fruits: [Fruittie] = []  // This is the main data source for the list in the UI
     private let database: AppDatabase
+    
+    // Computed property to get total items in the cart
+    var cartCount: Int32 {
+        fruits.reduce(0) { $0 + $1.inCart }
+    }
 
     init() {
         database = Factory().createRoomDatabase()

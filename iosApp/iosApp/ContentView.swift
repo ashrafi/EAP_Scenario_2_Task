@@ -9,8 +9,6 @@ struct ContentView: View {
         _viewModel = StateObject(wrappedValue: viewModel ?? FruitViewModel())
     }
 
-    @State private var cartCount = 0
-
     var body: some View {
         NavigationView {
             VStack {
@@ -40,7 +38,7 @@ struct ContentView: View {
 
                 // Cart and Expand section
                 HStack {
-                    Text("Cart has \(cartCount) items")
+                    Text("Cart has \(viewModel.cartCount) items")  // Display cartCount from viewModel
                     Spacer()
                     Button(action: {
                         // Add expand functionality here
