@@ -2,8 +2,11 @@ import SwiftUI
 import shared
 
 
+import SwiftUI
+
 struct ContentView: View {
     @StateObject private var viewModel: FruitViewModel
+    @State private var isExpanded = false  // Track cart expansion
 
     init(viewModel: FruitViewModel? = nil) {
         _viewModel = StateObject(wrappedValue: viewModel ?? FruitViewModel())
@@ -38,18 +41,18 @@ struct ContentView: View {
 
                 // Cart and Expand section
                 HStack {
-                    Text("Cart has \(viewModel.cartCount) items")  // Display cartCount from viewModel
+                    Text("Cart has \(viewModel.cartCount) items")
                     Spacer()
                     Button(action: {
-                        // Add expand functionality here
+                        isExpanded.toggle()  // Toggle expand/collapse cart view
                     }) {
-                        Text("expand")
+                        Text(isExpanded ? "Collapse Cart" : "Expand Cart")
                             .foregroundColor(.blue)
                     }
                 }
                 .padding()
 
-                // List of fruits
+                // Main list of fruits
                 List(viewModel.fruits, id: \.id) { fruit in
                     HStack {
                         VStack(alignment: .leading) {
@@ -58,6 +61,17 @@ struct ContentView: View {
                             Text(fruit.fullName)
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
+                            
+                            
+                            // Show additional information if in expanded mode
+                            if isExpanded {
+                                Text("Calories: \(fruit.calories)")
+                                    .font(.footnote)
+                                    .foregroundColor(.secondary)
+                                Text("In cart: \(fruit.inCart)")
+                                    .font(.footnote)
+                                    .foregroundColor(.green)
+                            }
                         }
                         Spacer()
 
@@ -89,6 +103,32 @@ struct ContentView: View {
                     .padding(.vertical, 8)
                 }
                 .listStyle(PlainListStyle())
+
+                // Expanded Cart Summary
+                if isExpanded {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Cart Summary")
+                            .font(.headline)
+                            .padding(.top)
+
+                        ForEach(viewModel.fruits.filter { $0.inCart > 0 }, id: \.id) { fruit in
+                            HStack {
+                                Text(fruit.name)
+                                Spacer()
+                                Text("Quantity: \(fruit.inCart)")
+                            }
+                            .font(.subheadline)
+                        }
+
+                        Text("Total items in cart: \(viewModel.cartCount)")
+                            .font(.footnote)
+                            .padding(.top, 8)
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+                }
             }
             .navigationTitle("Fruitties")
         }
