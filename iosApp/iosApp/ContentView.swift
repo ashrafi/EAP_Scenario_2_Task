@@ -1,4 +1,5 @@
 import SwiftUI
+import shared
 
 struct Fruit: Identifiable {
     let id = UUID()
@@ -7,16 +8,8 @@ struct Fruit: Identifiable {
 }
 
 struct ContentView: View {
-    let fruits = [
-        Fruit(name: "Apple", fullName: "Malus domestica"),
-        Fruit(name: "Banana", fullName: "Musa acuminata"),
-        Fruit(name: "Orange", fullName: "Citrus × sinensis"),
-        Fruit(name: "Grapes", fullName: "Vitis vinifera"),
-        Fruit(name: "Strawberry", fullName: "Fragaria × ananassa"),
-        Fruit(name: "Watermelon", fullName: "Citrullus lanatus"),
-        Fruit(name: "Pineapple", fullName: "Ananas comosus"),
-        Fruit(name: "Mango", fullName: "Mangifera indica")
-    ]
+    @StateObject private var viewModel = FruitViewModel()
+
 
     @State private var cartCount = 0
 
@@ -35,7 +28,7 @@ struct ContentView: View {
                 }
                 .padding()
 
-                List(fruits) { fruit in
+                List(viewModel.fruits, id: \.id) { fruit in
                     HStack {
                         VStack(alignment: .leading) {
                             Text(fruit.name)
