@@ -1,14 +1,8 @@
 import SwiftUI
 import shared
 
-struct Fruit: Identifiable {
-    let id = UUID()
-    let name: String
-    let fullName: String
-}
-
 struct ContentView: View {
-    @StateObject private var viewModel: FruitViewModel  // Initialize directly in the declaration
+    @StateObject private var viewModel: FruitViewModel
 
     // Optional initializer to accept a custom view model for preview purposes
     init(viewModel: FruitViewModel? = nil) {
@@ -17,10 +11,34 @@ struct ContentView: View {
 
     @State private var cartCount = 0
 
-    
     var body: some View {
         NavigationView {
             VStack {
+                // Top row for "Add DB" and "Delete DB" buttons
+                HStack {
+                    Button(action: {
+                        Task {
+                            await viewModel.initializeDataIfEmpty()
+                        }
+                    }) {
+                        Text("Add DB")
+                            .foregroundColor(.green)
+                            .padding(.horizontal)
+                    }
+                    Spacer()
+                    Button(action: {
+                        Task {
+                            await viewModel.deleteAllFruits()
+                        }
+                    }) {
+                        Text("Delete DB")
+                            .foregroundColor(.red)
+                            .padding(.horizontal)
+                    }
+                }
+                .padding(.horizontal)
+                
+                // Cart and Expand section
                 HStack {
                     Text("Cart has \(cartCount) items")
                     Spacer()
@@ -33,6 +51,7 @@ struct ContentView: View {
                 }
                 .padding()
 
+                // List of fruits
                 List(viewModel.fruits, id: \.id) { fruit in
                     HStack {
                         VStack(alignment: .leading) {

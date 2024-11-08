@@ -67,4 +67,16 @@ class FruitViewModel: ObservableObject {
             }
         } 
     }
+    
+    // Method to delete all fruits from the database
+    func deleteAllFruits() async {
+        let fruitDao = database.fruittieDao
+        do {
+            try await fruitDao().deleteAll()
+            print("All fruits deleted from the database.")
+        } catch {
+            print("Error deleting all fruits: \(error)")
+        }
+    }// Method to delete all fruits from the database
+
 }

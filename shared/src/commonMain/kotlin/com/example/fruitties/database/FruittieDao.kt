@@ -47,4 +47,10 @@ interface FruittieDao {
         Long,
         Fruittie,
         >
+
+    // Method to delete all entries in the Fruittie table
+    @Query("DELETE FROM Fruittie")
+    suspend fun deleteAll()
+
+    
 }
