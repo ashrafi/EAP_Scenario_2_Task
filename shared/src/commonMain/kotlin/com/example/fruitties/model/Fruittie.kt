@@ -30,4 +30,6 @@ data class Fruittie(
     val fullName: String,
     @SerialName("calories")
     val calories: String,
+    @SerialName("in_cart")
+    val inCart: Int = 0  // Track the quantity in the cart
 )

@@ -9,9 +9,6 @@
 import SwiftUI
 import shared
 
-import SwiftUI
-import shared
-
 @MainActor
 class FruitViewModel: ObservableObject {
     @Published private(set) var fruits: [Fruittie] = []  // This is the main data source for the list in the UI
@@ -30,21 +27,18 @@ class FruitViewModel: ObservableObject {
         let fruitDao = database.fruittieDao
         
         do {
-            // Correct syntax to check if the database is empty
             let count = try await fruitDao().count()
             
             if count == 0 {
-                // Example data to insert into the database
                 let initialFruits = [
-                    Fruittie(id: 0, name: "Apple", fullName: "Malus domestica", calories: "52"),
-                    Fruittie(id: 0, name: "Banana", fullName: "Musa acuminata", calories: "96"),
-                    Fruittie(id: 0, name: "Orange", fullName: "Citrus × sinensis", calories: "47"),
-                    Fruittie(id: 0, name: "Grapes", fullName: "Vitis vinifera", calories: "69"),
-                    Fruittie(id: 0, name: "Strawberry", fullName: "Fragaria × ananassa", calories: "32"),
-                    Fruittie(id: 0, name: "Watermelon", fullName: "Citrullus lanatus", calories: "30")
+                    Fruittie(id: 0, name: "Apple", fullName: "Malus domestica", calories: "52", inCart: 0),
+                    Fruittie(id: 0, name: "Banana", fullName: "Musa acuminata", calories: "96", inCart: 0),
+                    Fruittie(id: 0, name: "Orange", fullName: "Citrus × sinensis", calories: "47", inCart: 0),
+                    Fruittie(id: 0, name: "Grapes", fullName: "Vitis vinifera", calories: "69", inCart: 0),
+                    Fruittie(id: 0, name: "Strawberry", fullName: "Fragaria × ananassa", calories: "32", inCart: 0),
+                    Fruittie(id: 0, name: "Watermelon", fullName: "Citrullus lanatus", calories: "30", inCart: 0)
                 ]
                 
-                // Insert the initial data into the database
                 try await fruitDao().insert(fruitties: initialFruits)
                 print("Inserted initial data")
             } else {
@@ -65,9 +59,33 @@ class FruitViewModel: ObservableObject {
                 self.fruits = newFruits
                 print("Number of items in Flow: \(newFruits.count)")
             }
-        } 
+        }
     }
-    
+
+    // Method to add a fruit to the cart or increase its quantity
+    func addToCart(fruit: Fruittie) async {
+        let fruitDao = database.fruittieDao
+        do {
+            let newQuantity = fruit.inCart + 1
+            try await fruitDao().updateCartQuantity(id: fruit.id, newQuantity: newQuantity)
+            print("Updated cart quantity for \(fruit.name) to \(newQuantity)")
+        } catch {
+            print("Error updating cart quantity: \(error)")
+        }
+    }
+
+    // Method to remove a fruit from the cart or decrease its quantity
+    func removeFromCart(fruit: Fruittie) async {
+        let fruitDao = database.fruittieDao
+        let newQuantity = max(fruit.inCart - 1, 0)  // Ensure non-negative quantity
+        do {
+            try await fruitDao().updateCartQuantity(id: fruit.id, newQuantity: newQuantity)
+            print("Updated cart quantity for \(fruit.name) to \(newQuantity)")
+        } catch {
+            print("Error updating cart quantity: \(error)")
+        }
+    }
+
     // Method to delete all fruits from the database
     func deleteAllFruits() async {
         let fruitDao = database.fruittieDao
@@ -77,6 +95,5 @@ class FruitViewModel: ObservableObject {
         } catch {
             print("Error deleting all fruits: \(error)")
         }
-    }// Method to delete all fruits from the database
-
+    }
 }

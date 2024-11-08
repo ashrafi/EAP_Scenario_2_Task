@@ -1,10 +1,10 @@
 import SwiftUI
 import shared
 
+
 struct ContentView: View {
     @StateObject private var viewModel: FruitViewModel
 
-    // Optional initializer to accept a custom view model for preview purposes
     init(viewModel: FruitViewModel? = nil) {
         _viewModel = StateObject(wrappedValue: viewModel ?? FruitViewModel())
     }
@@ -37,7 +37,7 @@ struct ContentView: View {
                     }
                 }
                 .padding(.horizontal)
-                
+
                 // Cart and Expand section
                 HStack {
                     Text("Cart has \(cartCount) items")
@@ -60,6 +60,32 @@ struct ContentView: View {
                             Text(fruit.fullName)
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
+                        }
+                        Spacer()
+
+                        // Cart quantity controls
+                        HStack {
+                            Button(action: {
+                                Task {
+                                    await viewModel.removeFromCart(fruit: fruit)
+                                }
+                            }) {
+                                Image(systemName: "minus.circle")
+                                    .foregroundColor(.red)
+                            }.buttonStyle(PlainButtonStyle())
+
+                            Text("\(fruit.inCart)")  // Display the current quantity
+                                .font(.subheadline)
+                                .padding(.horizontal, 8)
+
+                            Button(action: {
+                                Task {
+                                    await viewModel.addToCart(fruit: fruit)
+                                }
+                            }) {
+                                Image(systemName: "plus.circle")
+                                    .foregroundColor(.blue)
+                            }.buttonStyle(PlainButtonStyle())
                         }
                     }
                     .padding(.vertical, 8)

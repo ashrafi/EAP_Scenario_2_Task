@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "88d6cb8637e50e45bdb804b3cba6b273",
+    "identityHash": "7a2932d1e7d2e92cd678f09956deed03",
     "entities": [
       {
         "tableName": "Fruittie",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `fullName` TEXT NOT NULL, `calories` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `fullName` TEXT NOT NULL, `calories` TEXT NOT NULL, `inCart` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -31,6 +31,12 @@
             "columnName": "calories",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "inCart",
+            "columnName": "inCart",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -43,7 +49,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '88d6cb8637e50e45bdb804b3cba6b273')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7a2932d1e7d2e92cd678f09956deed03')"
     ]
   }
 }

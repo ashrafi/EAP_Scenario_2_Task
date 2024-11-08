@@ -52,5 +52,8 @@ interface FruittieDao {
     @Query("DELETE FROM Fruittie")
     suspend fun deleteAll()
 
-    
+    @Query("UPDATE Fruittie SET inCart = :newQuantity WHERE id = :id")
+    suspend fun updateCartQuantity(id: Long, newQuantity: Int)
+
+
 }
