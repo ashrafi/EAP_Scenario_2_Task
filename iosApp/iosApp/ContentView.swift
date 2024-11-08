@@ -8,11 +8,16 @@ struct Fruit: Identifiable {
 }
 
 struct ContentView: View {
-    @StateObject private var viewModel = FruitViewModel()
+    @StateObject private var viewModel: FruitViewModel  // Initialize directly in the declaration
 
+    // Optional initializer to accept a custom view model for preview purposes
+    init(viewModel: FruitViewModel? = nil) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? FruitViewModel())
+    }
 
     @State private var cartCount = 0
 
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -49,6 +54,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(viewModel: MockFruitViewModel())
     }
 }

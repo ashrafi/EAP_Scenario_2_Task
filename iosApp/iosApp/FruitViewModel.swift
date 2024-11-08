@@ -14,7 +14,7 @@ import shared
 
 @MainActor
 class FruitViewModel: ObservableObject {
-    @Published private(set) var fruits: [Fruittie] = []
+    @Published private(set) var fruits: [Fruittie] = []  // This is the main data source for the list in the UI
     private let database: AppDatabase
 
     init() {
