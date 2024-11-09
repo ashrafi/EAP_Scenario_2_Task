@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7a2932d1e7d2e92cd678f09956deed03",
+    "identityHash": "e0225af9049c2a5132280520d96a4ca3",
     "entities": [
       {
         "tableName": "Fruittie",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `fullName` TEXT NOT NULL, `calories` TEXT NOT NULL, `inCart` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `fullName` TEXT NOT NULL, `calories` TEXT NOT NULL, `inCart` INTEGER NOT NULL, `fruitColor` TEXT NOT NULL, `origin` TEXT NOT NULL, `season` TEXT NOT NULL, `description` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -37,6 +37,30 @@
             "columnName": "inCart",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "fruitColor",
+            "columnName": "fruitColor",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "origin",
+            "columnName": "origin",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "season",
+            "columnName": "season",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -49,7 +73,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7a2932d1e7d2e92cd678f09956deed03')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e0225af9049c2a5132280520d96a4ca3')"
     ]
   }
 }

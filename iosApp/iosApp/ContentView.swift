@@ -1,9 +1,6 @@
 import SwiftUI
 import shared
 
-
-import SwiftUI
-
 struct ContentView: View {
     @StateObject private var viewModel: FruitViewModel
     @State private var isExpanded = false  // Track cart expansion
@@ -58,6 +55,7 @@ struct ContentView: View {
                         VStack(alignment: .leading) {
                             Text(fruit.name)
                                 .font(.headline)
+                                .foregroundColor(Color(hex: fruit.fruitColor))  // Set name color
                             Text(fruit.fullName)
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
@@ -106,28 +104,7 @@ struct ContentView: View {
 
                 // Expanded Cart Summary
                 if isExpanded {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Cart Summary")
-                            .font(.headline)
-                            .padding(.top)
-
-                        ForEach(viewModel.fruits.filter { $0.inCart > 0 }, id: \.id) { fruit in
-                            HStack {
-                                Text(fruit.name)
-                                Spacer()
-                                Text("Quantity: \(fruit.inCart)")
-                            }
-                            .font(.subheadline)
-                        }
-
-                        Text("Total items in cart: \(viewModel.cartCount)")
-                            .font(.footnote)
-                            .padding(.top, 8)
-                    }
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(8)
-                    .padding(.horizontal)
+                    ExpandView(viewModel: viewModel)
                 }
             }
             .navigationTitle("Fruitties")
@@ -135,8 +112,30 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView(viewModel: MockFruitViewModel())
+
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)  // Remove # or other invalid characters
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        
+        let red, green, blue: Double
+        if hex.count == 6 {
+            // Parse RGB (24-bit)
+            red = Double((int >> 16) & 0xFF) / 255.0
+            green = Double((int >> 8) & 0xFF) / 255.0
+            blue = Double(int & 0xFF) / 255.0
+        } else {
+            // Default to white if hex string is invalid
+            red = 1.0
+            green = 1.0
+            blue = 1.0
+        }
+        
+        self.init(red: red, green: green, blue: blue)
     }
 }
+
+
+
+

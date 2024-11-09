@@ -31,5 +31,18 @@ data class Fruittie(
     @SerialName("calories")
     val calories: String,
     @SerialName("in_cart")
-    val inCart: Int = 0  // Track the quantity in the cart
+    val inCart: Int = 0,  // Track the quantity in the cart
+
+    // New fields
+    @SerialName("fruit_color")
+    val fruitColor: String,  // e.g., "Red", "Yellow"
+
+    @SerialName("origin")
+    val origin: String,  // e.g., "USA", "Brazil"
+
+    @SerialName("season")
+    val season: String,  // e.g., "Summer", "Year-round"
+
+    @SerialName("description")
+    val description: String  // Additional details about the fruit
 )
